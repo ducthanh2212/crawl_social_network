@@ -1,0 +1,50 @@
+{
+  "name": "facebook-kol-brand-safety-crawler",
+  "version": "1.0.0",
+  "description": "Hệ thống cào dữ liệu Facebook & đánh giá Brand Safety KOL bằng Crawlee, Playwright và LLM",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test:browser": "tsx src/testBrowser.ts",
+    "test:session": "tsx src/testSession.ts",
+    "test:antidetect": "tsx src/testAntiDetect.ts",
+    "test:interceptor": "tsx src/testInterceptor.ts",
+    "crawl:search": "tsx src/testSearchCrawler.ts",
+    "crawl:comments": "tsx src/testCommentCrawler.ts",
+    "clean:test": "tsx src/testDataCleaning.ts",
+    "test:evaluator": "tsx src/testRiskEvaluator.ts",
+    "login:manual": "tsx src/session/saveLoginSession.ts",
+    "start:brand-safety": "tsx src/index.ts",
+    "ui": "tsx src/server.ts",
+    "start:ui": "tsx src/server.ts",
+    "start": "tsx src/index.ts"
+  },
+  "keywords": [
+    "crawlee",
+    "playwright",
+    "facebook",
+    "crawler",
+    "social-listening",
+    "brand-safety",
+    "llm"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google/genai": "latest",
+    "crawlee": "^3.12.2",
+    "dotenv": "^16.4.7",
+    "express": "^5.2.1",
+    "pino": "^9.6.0",
+    "pino-pretty": "^13.0.0",
+    "playwright": "^1.50.1",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^22.13.4",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  }
+}

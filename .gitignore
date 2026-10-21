@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+package-lock.json.bak
+
+# Production Build
+dist/
+
+# Environment Variables (Bao mat tuyet doi - khong push len git)
+.env
+.env.local
+.env.*.local
+
+# Facebook Sessions & Cookies (Thong tin dang nhap ca nhan)
+data/sessions/*
+!data/sessions/.gitkeep
+!data/sessions/storageState.example.json
+
+# Raw Crawled Data
+data/raw/*
+!data/raw/.gitkeep
+
+# Processed Reports
+data/processed/*
+!data/processed/.gitkeep
+
+# Logs & Debugging
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Playwright artifacts & Screenshots
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+*.png
+*.jpg
+*.jpeg
+
+# Operating System files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facebook KOL Brand Safety AI Auditor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-glow bg-glow-3"></div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="navbar">
+      <div class="logo-group">
+        <div class="logo-icon">🛡️</div>
+        <div class="logo-text">
+          <h1>Brand Safety <span class="gradient-text">AI Auditor</span></h1>
+          <p>Real-time Facebook Social Listening & Risk Evaluation Engine</p>
+        </div>
+      </div>
+      <div class="header-badges">
+        <span class="badge badge-ai">✨ Gemini 3.1 Pro Powered</span>
+        <span class="badge badge-status" id="systemStatusBadge"><span class="dot dot-green"></span> System Ready</span>
+      </div>
+    </header>
+
+    <!-- Main Grid Content -->
+    <main class="main-grid">
+      <!-- Left Column: Control Panel & Form -->
+      <section class="card control-panel">
+        <div class="card-header">
+          <h2><span class="icon">🚀</span> Khởi tạo Chiến dịch Thẩm định</h2>
+          <p>Nhập thông tin KOL để AI cào sâu dữ liệu từ Facebook & bóc tách lùm xùm</p>
+        </div>
+
+        <form id="auditForm" class="audit-form">
+          <div class="form-group">
+            <label for="kolTarget">Tên KOL / Influencer <span class="required">*</span></label>
+            <div class="input-wrapper">
+              <span class="input-icon">🧑‍💼</span>
+              <input type="text" id="kolTarget" name="target" placeholder="Ví dụ: Võ Hà Linh, Trấn Thành, Hiếu PC..." required autocomplete="off">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="kolDomain">Lĩnh vực / Ngành nghề <span class="required">*</span></label>
+            <div class="input-wrapper">
+              <span class="input-icon">🏢</span>
+              <input type="text" id="kolDomain" name="domain" placeholder="Ví dụ: Mỹ phẩm & Beauty, Tài chính Crypto, Ẩm thực..." required autocomplete="off">
+            </div>
+          </div>
+
+          <!-- AI Keyword Generation Toggle -->
+          <div class="toggle-card">
+            <div class="toggle-info">
+              <span class="toggle-title">✨ Tự động tạo từ khóa bằng AI (Auto-Keywords)</span>
+              <span class="toggle-desc">Gemini tự động phân tích ngành nghề để gen 10-15 từ khóa "phốt & drama" tối ưu nhất</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="autoKeywordsToggle" checked>
+              <span class="slider round"></span>
+            </label>
+          </div>
+
+          <!-- Custom Keywords (Hidden/Shown based on toggle) -->
+          <div class="form-group" id="customKeywordsGroup" style="display: none;">
+            <label for="customKeywords">Từ khóa thủ công (Cách nhau bởi dấu phẩy)</label>
+            <div class="input-wrapper">
+              <span class="input-icon">🔑</span>
+              <input type="text" id="customKeywords" placeholder="phốt, review, lừa đảo, drama, kem trộn...">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="maxPosts">Số bài viết tối đa</label>
+              <div class="input-wrapper">
+                <span class="input-icon">📥</span>
+                <input type="number" id="maxPosts" value="8" min="2" max="50">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="maxComments">Số bình luận / Bài</label>
+              <div class="input-wrapper">
+                <span class="input-icon">💬</span>
+                <input type="number" id="maxComments" value="12" min="3" max="100">
+              </div>
+            </div>
+          </div>
+
+          <!-- Headless Toggle -->
+          <div class="toggle-card minimal-toggle">
+            <div class="toggle-info">
+              <span class="toggle-title">🌐 Chạy trình duyệt ẩn (Headless Mode)</span>
+              <span class="toggle-desc">Tắt nếu bạn muốn xem trực tiếp thao tác chuột tự động trên Facebook</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="headlessToggle" checked>
+              <span class="slider round"></span>
+            </label>
+          </div>
+
+          <button type="submit" class="btn-submit" id="startAuditBtn">
+            <span class="btn-icon">⚡</span>
+            <span class="btn-text">BẮT ĐẦU QUÉT & THẨM ĐỊNH AI</span>
+          </button>
+        </form>
+
+        <!-- Past Audits History -->
+        <div class="history-section">
+          <div class="history-header">
+            <h3>📑 Hồ sơ đã thẩm định gần đây</h3>
+            <button class="btn-refresh-history" id="refreshHistoryBtn">↻ Làm mới</button>
+          </div>
+          <div class="history-list" id="historyList">
+            <div class="history-empty">Đang tải danh sách hồ sơ...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Column: Real-time Terminal Logs & Report Dashboard -->
+      <section class="right-column">
+        <!-- Live Execution Status Card -->
+        <div class="card terminal-card" id="terminalCard">
+          <div class="card-header terminal-header">
+            <div class="terminal-title">
+              <span class="icon">📡</span>
+              <span>Live Execution Pipeline Stream</span>
+              <span class="badge badge-running" id="pipelinePhaseBadge" style="display:none;">Phase 1: Initializing...</span>
+            </div>
+            <div class="terminal-actions">
+              <button class="btn-icon-small" id="clearLogsBtn" title="Xóa log">🗑️</button>
+            </div>
+          </div>
+          <div class="terminal-body" id="logContainer">
+            <div class="log-entry log-system">
+              <span class="log-time">[System Ready]</span>
+              <span class="log-msg">Chào mừng bạn đến với hệ thống thẩm định Brand Safety. Hãy nhập thông tin bên trái để bắt đầu!</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Executive Report Display Card (Hidden initially until report generated/clicked) -->
+        <div class="card report-card" id="reportCard" style="display: none;">
+          <div class="card-header report-top-header">
+            <div>
+              <span class="badge badge-report">📊 AUDIT REPORT</span>
+              <h2 id="reportKolTitle" class="report-kol-name">Hồ sơ KOL: --</h2>
+              <span id="reportDate" class="report-date">Ngày báo cáo: --</span>
+            </div>
+            <div class="report-top-actions">
+              <a id="downloadJsonBtn" href="#" target="_blank" class="btn-download" style="background: rgba(0, 230, 118, 0.15); border-color: rgba(0, 230, 118, 0.4); color: #00e676;">
+                <span>📊 Tải File JSON</span>
+              </a>
+              <a id="downloadMdBtn" href="#" target="_blank" class="btn-download">
+                <span>📑 Tải Báo cáo (.md)</span>
+              </a>
+              <button class="btn-close-report" id="closeReportBtn">✕</button>
+            </div>
+          </div>
+
+          <div class="report-content">
+            <!-- Score & Recommendation Banner -->
+            <div class="score-banner" id="scoreBanner">
+              <div class="score-ring-container">
+                <div class="score-circle" id="scoreCircle">
+                  <span id="scoreValue" class="score-number">--</span>
+                  <span class="score-label">/ 100</span>
+                </div>
+              </div>
+              <div class="score-details">
+                <h3 id="riskLevelText" class="risk-title">Chưa phân loại</h3>
+                <p id="cooperationAdviceText" class="advice-text">Đang tiến hành tổng hợp dữ liệu rủi ro...</p>
+              </div>
+            </div>
+
+            <!-- Classification Breakdown Stats Table -->
+            <div class="stats-grid" id="statsGrid">
+              <div class="stat-box stat-positive">
+                <span class="stat-icon">🟢</span>
+                <span class="stat-count" id="countPositive">0</span>
+                <span class="stat-label">Tích cực (Positive)</span>
+              </div>
+              <div class="stat-box stat-neutral">
+                <span class="stat-icon">⚪</span>
+                <span class="stat-count" id="countNeutral">0</span>
+                <span class="stat-label">Trung lập (Neutral)</span>
+              </div>
+              <div class="stat-box stat-mild">
+                <span class="stat-icon">🟡</span>
+                <span class="stat-count" id="countMild">0</span>
+                <span class="stat-label">Chê nhẹ (Mild)</span>
+              </div>
+              <div class="stat-box stat-scandal">
+                <span class="stat-icon">🔴</span>
+                <span class="stat-count" id="countScandal">0</span>
+                <span class="stat-label">Phốt nặng (High Risk)</span>
+              </div>
+            </div>
+
+            <!-- Scandal Chronicle Table -->
+            <div class="scandal-section">
+              <h3>🚨 Nhật ký Lùm xùm & Phốt nghiêm trọng (Scandal Chronicle)</h3>
+              <div class="table-responsive">
+                <table class="scandal-table">
+                  <thead>
+                    <tr>
+                      <th>STT</th>
+                      <th>Tên Lùm xùm / Sự kiện</th>
+                      <th>Tóm tắt sự kiện & Phản ứng khán giả</th>
+                      <th>Mức độ</th>
+                      <th>Tính xác thực</th>
+                      <th>Nguồn</th>
+                    </tr>
+                  </thead>
+                  <tbody id="scandalTableBody">
+                    <!-- Dynamic rows injected via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Recommendations Grid -->
+            <div class="recommendations-grid">
+              <div class="rec-box rec-safe">
+                <h4>✅ Lĩnh vực có thể hợp tác an toàn</h4>
+                <ul id="safeDomainsList"></ul>
+              </div>
+              <div class="rec-box rec-prohibited">
+                <h4>🚫 Lĩnh vực KIÊNG KỴ / Cấm kỵ quảng cáo</h4>
+                <ul id="prohibitedDomainsList"></ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Antigravity Facebook KOL Brand Safety Crawler & AI Auditor Engine &copy; 2026. Built with Playwright, Crawlee & Google Gemini.</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
